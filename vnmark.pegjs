@@ -28,16 +28,16 @@ Comment
   = '#' value:$[^\n]* { return {type: 'Comment', location: location(), value}; }
 
 CommandLine
-  = _ ':' _ name:Name arguments_:(_ @ArgumentList)? _ comment:Comment? _N { return {type: 'CommandLine', name, arguments: arguments_, comment}; }
+  = _ ':' _ name:Name arguments_:(_ @ArgumentList)? _ comment:Comment? _N { return {type: 'CommandLine', location: location(), name, arguments: arguments_, comment}; }
 
 ArgumentList
   = Value|1.., _ ',' _|
 
 ElementLine
-  = _ name:Name _ ':' _ properties:PropertyList _ comment:Comment? _N { return {type: 'ElementLine', name, properties, comment}; }
+  = _ name:Name _ ':' _ properties:PropertyList _ comment:Comment? _N { return {type: 'ElementLine', location: location(), name, properties, comment}; }
 
 BatchedElementsLine
-  = _ batchedProperties:PropertyList|1.., _ ';' _| _ comment:Comment? _N { return {type: 'BatchedElementsLine', batchedProperties, comment}; }
+  = _ batchedProperties:PropertyList|1.., _ ';' _| _ comment:Comment? _N { return {type: 'BatchedElementsLine', location: location(), batchedProperties, comment}; }
 
 PropertyList
   = head:(Property / ValueProperty) tail:(_ ',' _ @Property)* { return [head, ...tail]; }
