@@ -1,6 +1,6 @@
 {
   "name": "vnmark-parser",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "VNMark document parser",
   "type": "module",
   "scripts": {
