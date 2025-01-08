@@ -28,7 +28,7 @@ Comment
   = '#' value:$[^\n]* { return {type: 'Comment', location: location(), value}; }
 
 CommandLine
-  = _ ':' _ name:Name arguments_:(_ @ArgumentList)? _ comment:Comment? _N { return {type: 'CommandLine', location: location(), name, arguments: arguments_, comment}; }
+  = _ ':' _ name:Name arguments_:(_ @ArgumentList)? _ comment:Comment? _N { return {type: 'CommandLine', location: location(), name, arguments: arguments_ || [], comment}; }
 
 ArgumentList
   = Value|1.., _ ',' _|

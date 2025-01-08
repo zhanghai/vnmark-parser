@@ -238,7 +238,7 @@ function peg$parse(input, options) {
   var peg$f3 = function() { return {type: 'BlankLine', location: location(), comment: null }; };
   var peg$f4 = function(comment) { return {type: 'CommentLine', location: location(), comment }; };
   var peg$f5 = function(value) { return {type: 'Comment', location: location(), value}; };
-  var peg$f6 = function(name, arguments_, comment) { return {type: 'CommandLine', location: location(), name, arguments: arguments_, comment}; };
+  var peg$f6 = function(name, arguments_, comment) { return {type: 'CommandLine', location: location(), name, arguments: arguments_ || [], comment}; };
   var peg$f7 = function(name, properties, comment) { return {type: 'ElementLine', location: location(), name, properties, comment}; };
   var peg$f8 = function(batchedProperties, comment) { return {type: 'BatchedElementsLine', location: location(), batchedProperties, comment}; };
   var peg$f9 = function(head, tail) { return [head, ...tail]; };
