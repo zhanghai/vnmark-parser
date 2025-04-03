@@ -16,7 +16,7 @@ Line
   / CommentLine
   / CommandLine
   / ElementLine
-  / BatchedElementsLine
+  / MacroLine
 
 BlankLine
   = _ _N { return {type: 'BlankLine', location: location(), comment: null }; }
@@ -28,16 +28,10 @@ Comment
   = '#' value:$[^\n]* { return {type: 'Comment', location: location(), value}; }
 
 CommandLine
-  = _ ':' _ name:Name arguments_:(_ @ArgumentList)? _ comment:Comment? _N { return {type: 'CommandLine', location: location(), name, arguments: arguments_ || [], comment}; }
-
-ArgumentList
-  = Value|1.., _ ',' _|
+  = _ ':' _ name:Value arguments_:(_ @Value|1.., _ ',' _|)? _ comment:Comment? _N { return {type: 'CommandLine', location: location(), name, arguments: arguments_ || [], comment}; }
 
 ElementLine
-  = _ name:Name _ ':' _ properties:PropertyList _ comment:Comment? _N { return {type: 'ElementLine', location: location(), name, properties, comment}; }
-
-BatchedElementsLine
-  = _ batchedProperties:PropertyList|1.., _ ';' _| _ comment:Comment? _N { return {type: 'BatchedElementsLine', location: location(), batchedProperties, comment}; }
+  = _ name:Value _ ':' _ properties:PropertyList _ comment:Comment? _N { return {type: 'ElementLine', location: location(), name, properties, comment}; }
 
 PropertyList
   = head:(Property / ValueProperty) tail:(_ ',' _ @Property)* { return [head, ...tail]; }
@@ -46,10 +40,13 @@ ValueProperty
   = value:Value { return {type: 'Property', location: location(), name: null, value}; }
 
 Property
-  = name:Name _ '=' _ value:Value { return {type: 'Property', location: location(), name, value}; }
+  = name:Value _ '=' _ value:Value { return {type: 'Property', location: location(), name, value}; }
 
-Name
-  = value:$([A-Za-z_] [A-Za-z0-9_]*) { return {type: 'Name', location: location(), value}; }
+MacroLine
+  = _ arguments_:MacroArgument|2.., _ ';' _| _ comment:Comment? _N { return {type: 'MacroLine', location: location(), arguments: arguments_, comment}; }
+
+MacroArgument
+  = $(Value / [:,=])|.., _|
 
 Value
   = LiteralValue

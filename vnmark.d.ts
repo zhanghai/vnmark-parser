@@ -6,10 +6,9 @@ export enum NodeType {
   CommentLine = 'CommentLine',
   CommandLine = 'CommandLine',
   ElementLine = 'ElementLine',
-  BatchedElementsLine = 'BatchedElementsLine',
+  MacroLine = 'MacroLine',
   Comment = 'Comment',
   Property = 'Property',
-  Name = 'Name',
   LiteralValue = 'LiteralValue',
   QuotedValue = 'QuotedValue',
   ScriptValue = 'ScriptValue',
@@ -56,30 +55,25 @@ export interface Comment extends Node {
 
 export interface CommandLine extends Line {
   type: NodeType.CommandLine;
-  name: Name;
+  name: Value;
   arguments: Value[];
 }
 
 export interface ElementLine extends Line {
   type: NodeType.ElementLine;
-  name: Name;
+  name: Value;
   properties: Property[];
-}
-
-export interface BatchedElementsLine extends Line {
-  type: NodeType.BatchedElementsLine;
-  batchedProperties: Property[][];
 }
 
 export interface Property extends Node {
   type: NodeType.Property;
-  name: Name | null;
+  name: Value | null;
   value: Value;
 }
 
-export interface Name extends Node {
-  type: NodeType.Name;
-  value: string;
+export interface MacroLine extends Line {
+  type: NodeType.MacroLine;
+  arguments: string[];
 }
 
 export interface Value extends Node {}
@@ -100,7 +94,7 @@ export interface ScriptValue extends Value {
 }
 
 export interface ParseOptions {
-  grammerSource?: string;
+  grammarSource?: string;
 }
 
 export function parse(input: string, options: ParseOptions): Document;
